@@ -59,6 +59,7 @@ function compareTwoCards(event, condition) {
 function incrementCounter(event, condition) {
   if (arguments[1] === "comparedMatch" || arguments[1] === "comparedDiff") {
     movesCounter[0].innerHTML = counter;
+    return "countIncreased"
   }
 }
 
@@ -91,6 +92,24 @@ function nonMatchingAndFlipDown(event, condition) {
     arrayOfOpenCards.pop();
     arrayOfOpenCards.pop();
     return true;
+  }
+}
+
+function ratingStars(event, condition) {
+  if (arguments[1] === "countIncreased") {
+    if (counter > 11 && counter < 15) {
+      let i = starRating.length - 1;
+      if (i === 2) {
+        starRating[i].remove();
+        starRating.pop();
+      }
+    } else if (counter >=15) {
+      let i = starRating.length - 1;
+      if (i === 1) {
+        starRating[i].remove();
+        starRating.pop();
+      }
+    }
   }
 }
 
@@ -164,6 +183,7 @@ function shuffle(array) {
      let matching = matchTwoCards(event, compare);
      let nonmatching = nonMatchingAndFlipDown(event, compare);
      let incCount = incrementCounter(event, compare);
+     let rate = ratingStars(event, incCount);
      let congrats = congratulations(event, matching);
    }
    if (eachFlip === 1) {
