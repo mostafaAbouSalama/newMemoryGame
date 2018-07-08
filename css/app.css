@@ -66,9 +66,10 @@ h1 {
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    transform: rotateY(180deg);
     background: #02b3e4;
     cursor: default;
+    transition: 0.3s;
 }
 
 .deck .card.show {
@@ -79,6 +80,8 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    transform: rotateY(-180deg);
+    transition-delay: 0.3s;
 }
 
 /*
@@ -103,7 +106,45 @@ h1 {
     display: inline-block;
 }
 
+.moves {
+  margin-left: 10%;
+}
+
+.tim {
+  margin-left: 10%;
+  display: inline-block;
+}
+
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+#theModal {
+  z-index: 1;
+  display: none;
+  background: #ffffff url('../img/geometry2.png');
+  padding: 32px;
+  border-radius: 10px;
+  border: 5px solid #000000;
+  width: 70%;
+  position: fixed;
+  margin: 0 auto 0 auto;
+  top: 25%;
+  right: 15%;
+  text-align: center;
+}
+
+#playAgain {
+  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+  height: 45px;
+  border-radius: 10px;
+  color: white;
+}
+
+.close {
+  float: initial;
+  font-size: 27px;
+  font-weight: bold;
 }
