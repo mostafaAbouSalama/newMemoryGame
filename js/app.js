@@ -14,7 +14,10 @@ let totalSeconds = 0;
 let startTimer;
 let theTime = Array.from(document.getElementsByClassName("tim"));
 let modal = document.getElementById("theModal");
+let starScore = document.querySelector(".stars");
 let starRating = Array.from(document.getElementsByClassName("fa-star"));
+let starHTML = starScore.innerHTML;
+let theDeck = document.querySelector(".deck");
 
 function flipThisCardUp(event) {
   if (event.target.className === "card match") {
@@ -162,6 +165,16 @@ function shuffle(array) {
     return array;
 }
 
+function reshuffleTheDeck(theDeck, shuffledVersion) {
+	for (i = 0; i<15; i++) {
+		theDeck.lastElementChild.remove();
+	}
+	for(i = 0; i<16; i++) {
+		theDeck.appendChild(shuffledVersion[i]);
+	}
+}
+
+reshuffleTheDeck(theDeck, shuffle(deckOfCardsArray));
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -189,4 +202,41 @@ function shuffle(array) {
    if (eachFlip === 1) {
      startTimer = setInterval(setTime, 1000);
    }
+ });
+
+ document.querySelector(".restart").addEventListener("click", function() {
+   clearInterval(startTimer);
+   totalSeconds = 0;
+   secSpan.innerHTML = formatTime(totalSeconds % 60);
+   minSpan.innerHTML = formatTime(parseInt(totalSeconds / 60));
+   counter = 0;
+   movesCounter[0].innerHTML = counter;
+   eachFlip = 0;
+   arrayOfOpenCards = [];
+   arrayOfMatchedCards = [];
+   deckOfCardsArray.forEach(function(card, index){
+     deckOfCardsArray[index].className = "card";
+   });
+   starScore.innerHTML = starHTML;
+   starRating = Array.from(document.getElementsByClassName("fa-star"));
+   reshuffleTheDeck(theDeck, shuffle(deckOfCardsArray));
+ });
+
+ document.querySelector("#playAgain").addEventListener("click", function() {
+   totalSeconds = 0;
+   secSpan.innerHTML = formatTime(totalSeconds % 60);
+   minSpan.innerHTML = formatTime(parseInt(totalSeconds / 60));
+   counter = 0;
+   movesCounter[0].innerHTML = counter;
+   eachFlip = 0;
+   arrayOfOpenCards = [];
+   arrayOfMatchedCards = [];
+   clearInterval(startTimer);
+   deckOfCardsArray.forEach(function(card, index){
+     deckOfCardsArray[index].className = "card";
+   });
+   modal.style.display = "none";
+   starScore.innerHTML = starHTML;
+   starRating = Array.from(document.getElementsByClassName("fa-star"));
+   reshuffleTheDeck(theDeck, shuffle(deckOfCardsArray));
  });
