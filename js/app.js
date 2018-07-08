@@ -5,12 +5,12 @@
 let deckOfCardsArray = Array.from(document.getElementsByClassName("card"));
 let arrayOfOpenCards = [];
 let arrayOfMatchedCards = [];
-let eachFlip = 0;
-let counter = 0;
+let eachFlip = 0;   //  Each card flip up counter
+let counter = 0;    //  Actual number of moves counter
 let movesCounter = Array.from(document.getElementsByClassName("moves"));
 let minSpan = document.getElementById("minutes");
 let secSpan = document.getElementById("seconds");
-let totalSeconds = 0;
+let totalSeconds = 0;   //  A timer variable
 let startTimer;
 let theTime = Array.from(document.getElementsByClassName("tim"));
 let modal = document.getElementById("theModal");
@@ -19,6 +19,7 @@ let starRating = Array.from(document.getElementsByClassName("fa-star"));
 let starHTML = starScore.innerHTML;
 let theDeck = document.querySelector(".deck");
 
+//  function will flip a card face up
 function flipThisCardUp(event) {
   if (event.target.className === "card match") {
     return "matched";
@@ -31,6 +32,7 @@ function flipThisCardUp(event) {
   }
 }
 
+//  Add the flipped up card above to the array
 function addMeToOpenCards(event, condition) {
   if (arguments[1] === "flipped") {
     arrayOfOpenCards.push(event.target);
@@ -40,6 +42,7 @@ function addMeToOpenCards(event, condition) {
   }
 }
 
+//  When two different cards are flipped up successively, compare them
 function compareTwoCards(event, condition) {
   if (arguments[1] === "added") {
     if (arrayOfOpenCards.length % 2 === 0) {
@@ -59,6 +62,7 @@ function compareTwoCards(event, condition) {
   }
 }
 
+//    Number of moves counter, after comparing two cards (i.e. a full move)
 function incrementCounter(event, condition) {
   if (arguments[1] === "comparedMatch" || arguments[1] === "comparedDiff") {
     movesCounter[0].innerHTML = counter;
@@ -66,6 +70,7 @@ function incrementCounter(event, condition) {
   }
 }
 
+//  After comparing two card, if they match, lock them face up, add them to matched cards array and remove them from open cards array
 function matchTwoCards(event, condition) {
   let i = arrayOfOpenCards.length - 1;
   let match1 = arrayOfOpenCards[i];
@@ -83,6 +88,7 @@ function matchTwoCards(event, condition) {
   }
 }
 
+//  After comparing two card, if they do not match, flip them face down and remove them from open cards array
 function nonMatchingAndFlipDown(event, condition) {
   let i = arrayOfOpenCards.length - 1;
   let nonmatch1 = arrayOfOpenCards[i];
@@ -98,15 +104,16 @@ function nonMatchingAndFlipDown(event, condition) {
   }
 }
 
+//    Decide what star rating to give the user depending on the number of moves he/she has done
 function ratingStars(event, condition) {
   if (arguments[1] === "countIncreased") {
-    if (counter > 11 && counter < 15) {
+    if (counter >= 17 && counter <= 27) {
       let i = starRating.length - 1;
       if (i === 2) {
         starRating[i].remove();
         starRating.pop();
       }
-    } else if (counter >=15) {
+    } else if (counter > 27) {
       let i = starRating.length - 1;
       if (i === 1) {
         starRating[i].remove();
@@ -116,6 +123,7 @@ function ratingStars(event, condition) {
   }
 }
 
+//    When all cards are matched, stop the timer and display the congratulations modal to the user with all his game record information
 function congratulations(event, condition) {
   if (arguments[1] === "aNewMatchAdded") {
     if (arrayOfMatchedCards.length === 16) {
@@ -128,8 +136,9 @@ function congratulations(event, condition) {
   }
 }
 
+//    Function displays the time elapsed in the shown format on web app (i.e 02:16)
 function formatTime(num) {
-  let numString = num + "";
+  let numString = num.toString();
   if (numString.length < 2) {
     return "0" + numString;
   } else {
@@ -137,6 +146,7 @@ function formatTime(num) {
   }
 }
 
+//    Functions that kickstarts the timer for the game
 function setTime() {
   ++totalSeconds;
   secSpan.innerHTML = formatTime(totalSeconds % 60);
@@ -165,6 +175,8 @@ function shuffle(array) {
     return array;
 }
 
+    // Function takes in the deck of cards selector and the new shuffled array of cards
+    // It remove all children of theDeck and then append HTML elements that represent the new shuffled cards
 function reshuffleTheDeck(theDeck, shuffledVersion) {
 	for (i = 0; i<15; i++) {
 		theDeck.lastElementChild.remove();
@@ -174,6 +186,7 @@ function reshuffleTheDeck(theDeck, shuffledVersion) {
 	}
 }
 
+//    Shuffling call
 reshuffleTheDeck(theDeck, shuffle(deckOfCardsArray));
 
 /*
@@ -199,11 +212,12 @@ reshuffleTheDeck(theDeck, shuffle(deckOfCardsArray));
      let rate = ratingStars(event, incCount);
      let congrats = congratulations(event, matching);
    }
-   if (eachFlip === 1) {
+   if (eachFlip === 1) {    //   When the user flips open the first card, fire the timer
      startTimer = setInterval(setTime, 1000);
    }
  });
 
+  //    Two event listeners for the restart button and the play again button of the modal that reset all the variables and flips down all cards and shuffles them
  document.querySelector(".restart").addEventListener("click", function() {
    clearInterval(startTimer);
    totalSeconds = 0;
@@ -235,8 +249,12 @@ reshuffleTheDeck(theDeck, shuffle(deckOfCardsArray));
    deckOfCardsArray.forEach(function(card, index){
      deckOfCardsArray[index].className = "card";
    });
-   modal.style.display = "none";
+   modal.style.display = "none";  //  Hide the modal after requesting to play again
    starScore.innerHTML = starHTML;
    starRating = Array.from(document.getElementsByClassName("fa-star"));
    reshuffleTheDeck(theDeck, shuffle(deckOfCardsArray));
  });
+
+  document.querySelector(".close").addEventListener("click", function() {
+    modal.style.display = "none";
+  });

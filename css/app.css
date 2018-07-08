@@ -141,10 +141,12 @@ h1 {
   height: 45px;
   border-radius: 10px;
   color: white;
+  cursor: pointer;
 }
 
 .close {
   float: initial;
   font-size: 27px;
   font-weight: bold;
+  cursor: pointer;
 }
